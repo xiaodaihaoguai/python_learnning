@@ -80,7 +80,7 @@ def save (lst) :
         stu_txt.write(str(item)+'\n')#将列表的每一行数据都添加进来
     stu_txt.close()
 def search() :
-    pass###阿
+    pass##
 def delete() :
     while True :
         student_id=input('请输入要输入删除的学生id：')
