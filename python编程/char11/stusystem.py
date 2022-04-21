@@ -115,13 +115,13 @@ def delete() :
                 break
 
 
-def modify() :
+def modify() : #太牛逼了  自己独立写的第一段代码
     while True :
         student_id=input('请输入要输入修改的学生id：')
         if student_id!="" :
             if os.path.exists(filename):
-                with open(filename,'w',encoding="utf-8") as file :
-                    student_old=file.readlines()
+                with open(filename,'r',encoding="utf-8") as file1 :
+                    student_old=file1.readlines()
             else:
                 student_old=[]
             flag = False  # 标记是否修改
@@ -129,7 +129,7 @@ def modify() :
                 with open(filename,'w',encoding='utf-8') as wfile :
                     d={}
                     for item in student_old :
-                        d=dict(eval(student_old))
+                        d=dict(eval(item))
                         if d["id"]!=student_id :
                             wfile.write(str(d)+"\n")
                         else :
@@ -149,10 +149,10 @@ def modify() :
                             student = {'id': id, 'name': name, 'english': englist, 'python': python, 'java': java}
                             wfile.write(str(student)+"\n")
                             flag=True
-                        if flag :
-                            print(f"id为{student_id}的学生信息已经被修改")
-                        else:
-                            print(f"没有找到学生信息")
+                    if flag :
+                        print(f"id为{student_id}的学生信息已经被修改")
+                    else:
+                        print(f"没有找到学生信息")
         else:
             print("无学生信息")
             break
