@@ -115,7 +115,7 @@ def delete() :
                 break
 
 
-def modify() : #太牛逼了  自己独立写的第一段代码
+def modify() : #太牛逼了  自己独立写的第一段代码 继续加油
     while True :
         student_id=input('请输入要输入修改的学生id：')
         if student_id!="" :
