@@ -79,14 +79,59 @@ def save (lst) :
     for item in lst :
         stu_txt.write(str(item)+'\n')#将列表的每一行数据都添加进来
     stu_txt.close()
-def search() :
-    pass##
+def search() : #按照自己理解写的
+    while True :
+        answer1=input("按照id搜索请按1，按照姓名搜索请按2：")
+        if answer1=='1' :
+            student_id=input('请输入学生id')
+            with open(filename,'r',encoding='utf-8') as  rfile :
+                student_old=rfile.readlines()
+                for item in student_old :
+                    d=dict(eval(item))
+                    if student_id==d['id'] :
+                        lst1=[]
+                        lst2=[]
+                        lst1=['id','姓名','英语','python','java','总成绩']
+                        lst2.append(d['id'])
+                        lst2.append(d['name'])
+                        lst2.append(d['english'])
+                        lst2.append(d['python'])
+                        #,d['java'],d['english']+d['python']+d['java'])
+                        #d['english'],d['python'],d['java'],d['english']+d['python']+d['java'])
+                        print(lst1)
+                        print(lst2)
+        elif answer1=='2':
+            student_id = input('请输入学生姓名')
+            with open(filename, 'r', encoding='utf-8') as rfile:
+                student_old = rfile.readlines()
+                for item in student_old:
+                    d = dict(eval(item))
+                    if student_id == d['name']:
+                        lst3 = []
+                        lst4 = []
+                        lst3 = ['id', '姓名', '英语', 'python', 'java', '总成绩']
+                        lst4.append(d['id'])
+                        lst4.append(d['name'])
+                        lst4.append(d['english'])
+                        lst4.append(d['python'])
+                        lst4.append(d['java'])
+                        lst4.append(int(d['python'])+int(d['java'])+int(d['python']))
+                        print(lst3)
+                        print(lst4)
+        else:
+            print('请重新输入')
+            continue
+        answer2=input('是否继续y/n')
+        if answer2=='y' :
+            continue
+        else:
+            break
 def delete() :
     while True :
         student_id=input('请输入要输入删除的学生id：')
         if student_id!='' :
             if os.path.exists(filename) :#判断文件是否存在
-                with open(filename,'r',encoding='utf-8') as  file:
+                with open(filename,'r',encoding='utf-8') as file:
                     student_old=file.readlines()
             else:
                 student_old=[]
@@ -109,13 +154,13 @@ def delete() :
                 break
             show() #删除之后要重新显示所有学生信息
             answer=input('是否继续删除？y/n\n')
-            if answer=="y" :
+            if answer=='y' :
                 continue
             else:
                 break
 
 
-def modify() : #太牛逼了  自己独立写的第一段代码 继续加油
+'''def modify() : #太牛逼了  自己独立写的第一段代码 继续加油
     while True :
         student_id=input('请输入要输入修改的学生id：')
         if student_id!="" :
@@ -162,12 +207,38 @@ def modify() : #太牛逼了  自己独立写的第一段代码 继续加油
             continue
         else:
             break
+'''
+def modify():
+    show()
+    if os.path.exists(filename) :
+        with open(filename,'r',encoding='utf-8') as rfile :
+            student_old=rfile.readlines()
+    else:
+        return
+    student_id=input('请输入要修改的学生id：')
+    with open(filename,'w',encoding="utf-8") as wfile :
+        for item in student_old :
+            d=dict(eval(item))
+            if d['id']==student_id :
+                print('找到相关学生信息，可以修改他的信息了！')
+                while True :
+                    try:
+                        d['name']=input('请输入姓名')
+                        d['english']=input('请输入英语成绩：')
+                        d['python']=input('请输入python成绩：')
+                        d['java']=input('请输入java成绩：')
+                    except :
+                        print('您输入的信息有误')
+                    else:
+                        break
 
-
-
-
-
-
+                wfile.write(str(d)+"\n")
+                print('修改成功')
+            else:
+                wfile.write(str(d)+"\n")
+        answer=input('是否继续修改？y/n\n')
+        if answer==y :
+            modify()
 
 
 
