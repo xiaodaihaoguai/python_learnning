@@ -4,6 +4,7 @@
 import os.path
 
 filename='student.txt'
+
 def main() :
     while True :
         menu()
@@ -43,6 +44,7 @@ def menu() :
     print('\t\t\t\t\t7.显示所有学生信息')
     print('\t\t\t\t\t0.退出')
     print('-------------------------------------------------------')
+
 def insert() :
     student_list=[]
     while True :
@@ -71,6 +73,7 @@ def insert() :
     #调用save函数
     save(student_list)
     print('学生信息录入完毕')
+
 def save (lst) :
     try :
         stu_txt=open(filename,'a',encoding="utf-8")
@@ -79,7 +82,8 @@ def save (lst) :
     for item in lst :
         stu_txt.write(str(item)+'\n')#将列表的每一行数据都添加进来
     stu_txt.close()
-def search() : #按照自己理解写的
+
+'''def search() : #按照自己理解写的
     while True :
         answer1=input("按照id搜索请按1，按照姓名搜索请按2：")
         if answer1=='1' :
@@ -126,6 +130,58 @@ def search() : #按照自己理解写的
             continue
         else:
             break
+            '''
+
+def search() :
+    student_query=[]
+    while True :
+        id=''
+        name=''
+        if os.path.exists(filename) :
+            mode=input('按照ID查找输入1，按照姓名查找输入2：')
+            if mode=='1':
+                id=input('请输入学生id')
+            elif mode=='2':
+                name=input('请输入学生姓名')
+            else:
+                print('您的输入有误，请重新输入')
+                search()
+            with open(filename,'r',encoding='utf-8') as  rfile :
+                student=rfile.readlines()
+                for item in student :
+                    d=dict(eval(item))
+                    if id!='' :
+                        if d['id']==id:
+                            student_query.append(d)
+                    elif name!='' :
+                        if d['name']==name:
+                            student_query.append(d)
+            #显示查询结果
+            show_student(student_query)
+            #清空列表
+            student_query.clear()
+            answer=input('是否继续查询：y/n?')
+            if answer=='y':
+                continue
+            else:
+                break
+
+def show_student(lst):
+    if len(lst)==0 :
+        print('没有查到学生信息，无数据显示')
+        return
+    #定义显示格式,结构化字符串
+    format_title='{:^6}\t{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^8}'
+    print(format_title.format('ID','姓名','英语成绩','python成绩','java成绩','总成绩'))
+    format_data='{:^6}\t{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^8}'
+    for item in lst :
+        print(format_data.format(item.get('id'),
+                                 item.get('name'),
+                                 item.get('english'),
+                                 item.get('python'),
+                                 item.get('java'),
+                                 int(item.get('english'))+int(item.get('python'))+int(item.get('java'))))
+
 def delete() :
     while True :
         student_id=input('请输入要输入删除的学生id：')
@@ -158,7 +214,6 @@ def delete() :
                 continue
             else:
                 break
-
 
 '''def modify() : #太牛逼了  自己独立写的第一段代码 继续加油
     while True :
@@ -208,6 +263,7 @@ def delete() :
         else:
             break
 '''
+
 def modify():
     show()
     if os.path.exists(filename) :
@@ -237,18 +293,111 @@ def modify():
             else:
                 wfile.write(str(d)+"\n")
         answer=input('是否继续修改？y/n\n')
-        if answer==y :
+        if answer=='y' :
             modify()
 
-
-
-
 def sort() :
-    pass
+    while True :
+        if os.path.exists(filename):
+            show()
+            answer = input('请选择（0升序，1降序）：')
+            if answer!='0' and answer!='1':
+                print('输入有误，请重新输入')
+                continue
+            with open(filename,"r",encoding='utf-8') as rfile :
+                students=rfile.readlines()
+                lst=[]
+                lst1=[]
+                choice1=''
+                choice_num=input('请输入排列顺序0-英语成绩 1-python成绩 2-java成绩 3-总成绩')
+                if choice_num=='0' :
+                    choice1='english'
+                elif choice_num=='1' :
+                    choice1='python'
+                elif choice_num=='2' :
+                    choice1='java'
+                if choice_num=='0' and choice_num=='1' and choice_num=='2':
+                    for item in students :
+                        d=dict(eval(item))
+                        lst.append(d[choice1])
+                    if answer=='0' :
+                        lst.sort()
+                    else:
+                        lst.sort(reverse=True)
+                    with open(filename, 'w', encoding='utf-8') as wfile1:
+                        wfile1.write('')
+                        for i in lst :
+                            for item in students :
+                                d2=dict(eval(item))
+                                if d2[choice1]==i:
+                                    with open(filename, 'a', encoding='utf-8') as wfile:
+                                        wfile.write(str(d2) + "\n")
+                elif choice_num=='3':
+                    for item2 in students:
+                        d = dict(eval(item2))
+                        lst1.append(d['english']+d['python']+d['java'])
+                    if answer == '0':
+                        lst1.sort()
+                    else:
+                        lst1.sort(reverse=True)
+                    with open(filename, 'w', encoding='utf-8') as wfile2 :
+                        wfile2.write('')
+                        for j in lst1:
+                            for item in students:
+                                d3 = dict(eval(item))
+                                if d3['english']+d3['python']+d3['java'] == j:
+                                    with open(filename, 'a', encoding='utf-8') as wfile:
+                                        wfile.write(str(d3) + "\n")
+
+                else:
+                    print('输入异常，请重新输入')
+                    break
+
+                show()
+                break
+
+
+
+
 def total() :
-    pass
+    if os.path.exists(filename):
+        with open(filename,'r',encoding='utf-8') as rfile :
+            student_old=rfile.readlines() #readlines 返回的原来是列表啊
+            num=0
+            for item in student_old :
+                if item!=0 :
+                    num+=1
+            print('学生总数为{}'.format(num)) # 格式化字符串 {}作为转义
+
+    else:
+        print('没有保存的信息')
+        return
+    answer = input('是否继续统计总数？y/n\n')
+    if answer == 'y':
+        total()
+
 def show() :
-    pass
+    if os.path.exists(filename):
+        with open(filename,'r',encoding='utf-8') as rfile :
+            students=rfile.readlines()
+            format_title = '{:^6}\t{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^8}'
+            print(format_title.format('ID','姓名','英语成绩','python成绩','java成绩','总成绩'))
+            format_data = '{:^6}\t{:^12}\t{:^8}\t{:^10}\t{:^10}\t{:^8}'
+            for item in students :
+                d = dict(eval(item))
+                print(format_data.format(d.get('id'),
+                                         d.get('name'),
+                                         d.get('english'),
+                                         d.get('python'),
+                                         d.get('java'),
+                                         int(d.get('english')) + int(d.get('python')) + int(d.get('java'))))
+            answer=input('是否继续显示y/n')
+            if answer=='y' :
+                show()
+            else:
+                return
+
+
 
 if __name__ == '__main__':
     main()
