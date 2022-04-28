@@ -198,7 +198,7 @@ def delete() :
                     for item in student_old :
                         d=dict(eval(item)) # 将字符串转成字典
                         if d['id']!=student_id :
-                            wfile.write(str(d)+"\n")
+                          wfile.write(str(d)+"\n")
                         else:
                             flag=True
                     if flag:
@@ -296,7 +296,7 @@ def modify():
         if answer=='y' :
             modify()
 
-def sort() :
+'''def sort() :#自己实现排序功能
     while True :
         if os.path.exists(filename):
             show()
@@ -355,10 +355,42 @@ def sort() :
 
                 show()
                 break
+'''
+def sort():
+    show()
+    if os.path.exists(filename):
+        with open(filename,'r',encoding='utf-8') as rfile :
+            student_list=rfile.readlines()
+        student_new=[]
+        for item in student_list :
+            d=dict(eval(item))
+            student_new.append(d)
+    else:
+        return
+    asc_or_desc=input('请选择0，升序，1，降序：')
+    if asc_or_desc=='0':
+        asc_or_desc_bool=False
+    elif asc_or_desc=='1':
+        asc_or_desc_bool=True
+    else:
+        print('您的输入有误，请重新输入')
+        sort()
+    mode=input('请选择排序方式1.英语 2.python 3.Java 0.总成绩')
+    if mode==1:
+        student_new.sort(key=lambda x:int(x['english']),reverse=asc_or_desc_bool) # 表示列表当中的每一项 这块儿没太懂？
+    elif mode==2:
+        student_new.sort(key=lambda x: int(x['python']), reverse=asc_or_desc_bool)  # 表示列表当中的每一项 这块儿没太懂？
+    elif mode==3:
+        student_new.sort(key=lambda x: int(x['java']), reverse=asc_or_desc_bool)  # 表示列表当中的每一项 这块儿没太懂？
+    elif mode==0:
+        student_new.sort(key=lambda x: int(x['english'])+int(x['java'])+int(x['python']), reverse=asc_or_desc_bool)# 表示列表当中的每一项 这块儿没太懂？
 
-
-
-
+    '''
+    else:
+        print('输入有误')
+        sort()
+    '''
+    show_student(student_new)
 def total() :
     if os.path.exists(filename):
         with open(filename,'r',encoding='utf-8') as rfile :
